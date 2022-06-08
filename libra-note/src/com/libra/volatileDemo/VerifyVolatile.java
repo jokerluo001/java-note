@@ -1,9 +1,16 @@
 package com.libra.volatileDemo;
 
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
-//验证validate保证可见性问题
+//volatile 是java提供的一个轻量级的同步机制
+//1.保证了可见性  --> 解释什么是可见性?
+//2.禁止指令重排  -->什么是指令重排?指令重排有什么坏处?
+//3.不保证原子性  -->为什么?
+//验证volatile保证可见性问题
 public class VerifyVolatile {
     public static void main(String[] args) {
+/*      //验证volatile保证可见性-----开始
         Data data = new Data();
         new Thread(() -> {
             try {
@@ -18,6 +25,32 @@ public class VerifyVolatile {
         while (data.getNumber() == 0) {}
         //打印 说明保证了可见性  不打印说明不保证
         System.out.println("系统停止了,表明main线程已经知道number进行过修改");
+        //验证volatile保证可见性-----结束
+*/
+
+
+        //验证volatile不保证原子性-----开始
+        /*
+        * 解决方案
+        * 1.对numberIncrement方法进行上锁  -->不推荐,虽然jdk1.6对synchronized进行了优化,但此处还是不推荐用这么重量级的锁。
+        * 2.用juc下面的原子类AtomicInteger -->推荐
+        * */
+        Data data2 = new Data();
+        for (int i = 0; i < 20; ++i) {
+            new Thread(() -> {
+                for (int j = 0; j < 1000; j++) {
+                    data2.numberIncrement();
+                }
+            }).start();
+        }
+        //main线程和GC线程
+        while (Thread.activeCount() > 2) {
+            Thread.yield();
+        }
+        //结果很大概率不会为20000,因为不保证原子性。
+        System.out.println("计算结束,结果为" + data2.getNumber());
+        //验证volatile不保证原子性-----结束
+
     }
 }
 
