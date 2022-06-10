@@ -34,6 +34,7 @@ public class VerifyVolatile {
         * 解决方案
         * 1.对numberIncrement方法进行上锁  -->不推荐,虽然jdk1.6对synchronized进行了优化,但此处还是不推荐用这么重量级的锁。
         * 2.用juc下面的原子类AtomicInteger -->推荐
+        * 3.ReentrantLock
         * */
         Data data2 = new Data();
         for (int i = 0; i < 20; ++i) {
