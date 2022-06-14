@@ -1,4 +1,4 @@
-package com.libra.cas;
+package com.libra.casDemo;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicStampedReference;
