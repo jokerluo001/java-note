@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicStampedReference;
  * 3.CAS的问题?
  *  a.ABA问题: 线程A,B同时对原子类AtomicInteger(200)进行操作;
  *             (1)线程A拿到值200被挂起;
- *             (2)线程拿到值200并修改为300,结束;
+ *             (2)线程B拿到值200并修改为300,结束;
  *             (3)线程B又拿到值300将其改为200,结束;
  *             (4)A线程拿到cpu使用权,继续执行未完成的CAS,程序执行起来并无问题,结束(很明显,2,3这两步有问题)
  *  b.循环开销时间大
